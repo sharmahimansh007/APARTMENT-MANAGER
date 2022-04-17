@@ -17,17 +17,21 @@ const managerSchema = new mongoose.Schema({
 
 // hasing the password
 
-mongooseSchema.pre("save", function(next){
-    if(!this.ismodified("password")){
+managerSchema.pre("save", function(next){
+    if(!this.isModified("password")){
         return next();
     };
 
     const hash = bcrypt.hashSync(this.password, 8);
-    this.password = hash
+    this.password = hash 
+    next()
+
 })
 
-managerSchema.maethods.comparePassword = function(userPassword){
+managerSchema.methods.comparePassword = function(userPassword){
     return bcrypt.compareSync(userPassword, this.password);
 }
 
-module.exports = mongoose.model("manager", managerSchema);
+
+const Manager = mongoose.model("manager", managerSchema);
+module.exports =  Manager
