@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-
+import { logoutReq } from "../../Redux/Action";
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -8,8 +8,16 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import { useNavigate } from "react-router-dom";
 
 export function NavBar() {
+
+  // const islogedIn = useSelector(state => state) 
+
+  // const navigate = useNavigate();
+
+  // const dispatch = useDispatch();
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -24,9 +32,18 @@ export function NavBar() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-           <h3>Apartment Manager</h3>
+            <Link to={"/"} style={{textDecoration:"none", color:"white"}}>
+
+            Apartment Manager
+            </Link> 
+          
+           <Link to={"/flat"} style={{marginLeft:"20px", textDecoration:"none", color:"white"}}>
+             Flat
+            </Link> 
           </Typography>
-          <Button color="inherit">Login</Button>
+         <Link to={"/login"} style={{textDecoration:"none", color:"white"}}>
+         <Button color="inherit">Login</Button>
+         </Link> 
         </Toolbar>
       </AppBar>
     </Box>
