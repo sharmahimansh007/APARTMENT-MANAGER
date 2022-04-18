@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import { logoutReq } from "../../Redux/Action";
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux"
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -8,7 +10,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import { useNavigate } from "react-router-dom";
+import {useState} from "react"
 
 export function NavBar() {
 
@@ -17,6 +19,14 @@ export function NavBar() {
   // const navigate = useNavigate();
 
   // const dispatch = useDispatch();
+  const [islogin, setIsLogin] = useState(false)
+
+  const handleLogOut = (task) => {
+    if(task == "Logout"){
+      dispatch(logoutReq());
+      navigate("/login")
+    }
+  }
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -42,7 +52,7 @@ export function NavBar() {
             </Link> 
           </Typography>
          <Link to={"/login"} style={{textDecoration:"none", color:"white"}}>
-         <Button color="inherit">Login</Button>
+         <Button color="inherit">{islogin ? "Logout" : "Login"}</Button>
          </Link> 
         </Toolbar>
       </AppBar>

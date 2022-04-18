@@ -15,6 +15,9 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -36,8 +39,18 @@ function TablePaginationActions(props) {
     onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
   };
 
+ 
   return (
+    
     <Box sx={{ flexShrink: 0, ml: 2.5 }}>
+      {/* {showResident.map((elem) => {
+  return <div>
+  <h4> {elem.name} </h4>
+  <h4> {elem.age} </h4>
+  <h4> {elem.gender} </h4>
+  <h4> {elem.type} </h4>
+  </div>
+})} */}
       <IconButton
         onClick={handleFirstPageButtonClick}
         disabled={page === 0}
@@ -83,22 +96,41 @@ function createData(OwnerName, FlatNo, Block, TotalResident) {
 }
 
 const rows = [
+
+  
+
   createData('Cupcake', 305, 3.7, 10),
-  createData('Donut', 452, 25.0, 10),
-  createData('Eclair', 262, 16.0, 10),
-  createData('Frozen yoghurt', 159, 6.0, 10),
-  createData('Gingerbread', 356, 16.0, 10),
-  createData('Honeycomb', 408, 3.2, 10),
-  createData('Ice cream sandwich', 237, 9.0, 10),
-  createData('Jelly Bean', 375, 0.0, 105),
-  createData('KitKat', 518, 26.0, 10),
-  createData('Lollipop', 392, 0.2, 10),
-  createData('Marshmallow', 318, 0, 10),
-  createData('Nougat', 360, 19.0, 10),
-  createData('Oreo', 437, 18.0, 125),
+  // createData('Donut', 452, 25.0, 10),
+  // createData('Eclair', 262, 16.0, 10),
+  // createData('Frozen yoghurt', 159, 6.0, 10),
+  // createData('Gingerbread', 356, 16.0, 10),
+  // createData('Honeycomb', 408, 3.2, 10),
+  // createData('Ice cream sandwich', 237, 9.0, 10),
+  // createData('Jelly Bean', 375, 0.0, 105),
+  // createData('KitKat', 518, 26.0, 10),
+  // createData('Lollipop', 392, 0.2, 10),
+  // createData('Marshmallow', 318, 0, 10),
+  // createData('Nougat', 360, 19.0, 10),
+  // // createData('Oreo', 437, 18.0, 125),
 ].sort((a, b) => (a.FlatNo < b.FlatNo ? -1 : 1));
 
 export function Home() {
+
+  const [showResident, setShowResident] = React.useState([])
+  React.useEffect(() => {
+    axios.get("http://localhost:5000/resident").then(res => {
+      console.log(res.data)
+     setShowResident([...res.data])
+     
+    })
+  },[])
+
+  const navigate = useNavigate();
+
+  const handleClick = (id) => {
+    navigate(`/residentdetails/${id}`)
+  }
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -125,22 +157,22 @@ export function Home() {
         </div>
       <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
         <TableBody>
-          {(rowsPerPage > 0
-            ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            : rows
+          {(showResident > 0
+            ? showResident.slice(page * showResident, page * showResident + showResident)
+            : showResident
           ).map((row) => (
-            <TableRow key={row.OwnerName}>
+            <TableRow onClick={() => {handleClick(row._id)}} key={row._id}>
               <TableCell sx={{ cursor: "pointer" }} component="th" scope="row">
-                {row.OwnerName}
+                {row.name}
               </TableCell>
               <TableCell style={{ width: 400 }} sx={{ cursor: "pointer" }} align="right">
-                {row.FlatNo}
+                {row.id.flat_number}
               </TableCell>
               <TableCell style={{ width: 400 }} sx={{ cursor: "pointer" }} align="right">
-                {row.Block}
+                {row.id.block}
               </TableCell>
               <TableCell style={{ width: 450 }} sx={{ cursor: "pointer" }} align="right">
-                {row.TotalResident}
+                {row.id.total_residents}
               </TableCell>
             </TableRow>
           ))}

@@ -8,7 +8,16 @@ const Resident = require( "../models/resident.model" );
 
 router.get("/", async(req,res) => {
     try{
-        const resident = await Resident.find().lean().exec();
+        const resident = await Resident.find().populate("id").lean().exec();
+        res.status(200).send(resident)
+    }catch(e){
+        return res.status(500).send(e.message);
+    }
+})
+
+router.get("/:id", async(req,res) => {
+    try{
+        const resident = await Resident.findById(req.params.id).populate("id").lean().exec();
         res.status(200).send(resident)
     }catch(e){
         return res.status(500).send(e.message);

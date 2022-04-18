@@ -4,6 +4,7 @@ import { Flat } from "../Flats/Flat"
 import { Home } from "../Home/Home"
 import { Login } from "../Login/Login"
 import { NavBar } from "../NavBar/NavBar"
+import { Residentdetails } from "../ResidentDetails/ResidentDetail"
 
 
 export const Routers = () => {
@@ -14,6 +15,7 @@ export const Routers = () => {
             <Route path="/" element={ <Home/> }/>
             <Route path="/flat" element={ <Flat/> } />
             <Route path="/login" element={ <Login/> } />
+            <Route path="/residentdetails/:id" element={ <Residentdetails/> } />
         </Routes>
         </>
     )
