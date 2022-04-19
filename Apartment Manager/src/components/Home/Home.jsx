@@ -19,6 +19,7 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 
 
+
 function TablePaginationActions(props) {
   const theme = useTheme();
   const { count, page, rowsPerPage, onPageChange } = props;
@@ -116,7 +117,10 @@ const rows = [
 
 export function Home() {
 
-  const [showResident, setShowResident] = React.useState([])
+  const [showResident, setShowResident] = React.useState([]);
+
+
+
   React.useEffect(() => {
     axios.get("http://localhost:5000/resident").then(res => {
       console.log(res.data)
@@ -124,6 +128,17 @@ export function Home() {
      
     })
   },[])
+
+  const handleSort = (value) => {
+    axios.get(`http://localhost:5000/resident?sort=${value}`).then(res => {
+      console.log(res.data)
+      setShowResident([...res.data])
+
+      console.log("working")
+    })
+  }
+
+
 
   const navigate = useNavigate();
 
@@ -148,6 +163,11 @@ export function Home() {
   };
 
   return (
+
+    <>
+     
+    <button  onClick={() => handleSort("asc")} > Sort in &#x21D1;</button>
+    <button onClick={() => handleSort("dsc")}>Sort in &#x21D3;</button>
     <TableContainer component={Paper}>
         <div className='headings'>
             <h2>Owner Name</h2>
@@ -205,5 +225,20 @@ export function Home() {
         </TableFooter>
       </Table>
     </TableContainer>
+    </>
   );
 }
+/*import * as React from 'react';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+
+export default function BasicButtons() {
+  return (
+    <Stack spacing={2} direction="row">
+      <Button variant="text">Text</Button>
+      <Button variant="contained">Contained</Button>
+      <Button variant="outlined">Outlined</Button>
+    </Stack>
+  );
+}
+ */

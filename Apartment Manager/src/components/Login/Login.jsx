@@ -156,6 +156,7 @@ export function Login() {
       axios.post("http://localhost:5000/login", values).then(res => {
           console.log(res.data);
           setIsLoading(false);
+          localStorage.setItem("islogin", true)
         navigate("/")
       }).catch(rej => {
           console.log(rej);

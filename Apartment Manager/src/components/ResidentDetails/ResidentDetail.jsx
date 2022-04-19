@@ -38,7 +38,7 @@ export function Residentdetails() {
     <CardContent className='cardDetails'>
         <h2 style={{color:"Black"}}> Residental Detail </h2>
         <Typography  className='info'>
-        <h3>Total Resident</h3>
+        <h3>Total Residents</h3>
         <h2> {ResidentalDetail.id.total_residents} </h2>
       </Typography>
       <Typography className='info'>

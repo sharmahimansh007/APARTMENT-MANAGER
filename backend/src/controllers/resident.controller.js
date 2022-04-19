@@ -6,14 +6,51 @@ const router = express.Router();
 
 const Resident = require( "../models/resident.model" );
 
+
+
 router.get("/", async(req,res) => {
+    // const block = req.query.block;
+    const sort = req.query.sort;
+    // const type = req.query.type;
     try{
-        const resident = await Resident.find().populate("id").lean().exec();
-        res.status(200).send(resident)
+        if(sort){
+            await Resident.find().populate('id').exec((e,residents) => {
+                
+                if(e){
+                 
+                    return res.status(500).send(e.message);
+                }
+                
+                if(sort === "asc"){
+                    const sorted = [...residents].sort(
+                      (a, b) => +a.id.flat_number - +b.id.flat_number
+                    );
+
+                    return res.status(200).send(sorted);
+                }else{
+                    const sorted = [...residents].sort(
+                      (a, b) => +b.id.flat_number - +a.id.flat_number
+                    );
+
+                    return res.status(200).send(sorted);
+                }
+                
+            });
+         }
+       
+        else{
+            const residents = await Resident.find().populate("id").lean().exec();
+
+            res.status(200).send(residents);
+        }
+        
     }catch(e){
+        console.log(e)
         return res.status(500).send(e.message);
     }
 })
+
+
 
 router.get("/:id", async(req,res) => {
     try{
@@ -30,7 +67,7 @@ router.post("/", async(req,res) => {
         const resident = await Resident.create(req.body);
 
         const flat = await Flat.findById(resident.id).lean().exec();
-        flat.staus = false;
+        flat.status = false;
 
         Flat.findByIdAndUpdate(resident.id, flat,{new:true})
 

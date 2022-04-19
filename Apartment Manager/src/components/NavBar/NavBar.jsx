@@ -14,19 +14,10 @@ import {useState} from "react"
 
 export function NavBar() {
 
-  // const islogedIn = useSelector(state => state) 
-
-  // const navigate = useNavigate();
-
-  // const dispatch = useDispatch();
-  const [islogin, setIsLogin] = useState(false)
-
-  const handleLogOut = (task) => {
-    if(task == "Logout"){
-      dispatch(logoutReq());
-      navigate("/login")
-    }
-  }
+  const [islogin, setIsLogin] = useState(
+    localStorage.getItem("islogin") ||
+    false)
+  
 
   return (
     <Box sx={{ flexGrow: 1 }}>
